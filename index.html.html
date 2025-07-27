@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechLabs_AZ - Engineering Training Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #8BC34A, #4CAF50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '💡';
+            font-size: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .nav-menu a:hover {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 2px solid #3498db;
+            color: #3498db;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 100px;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            min-height: calc(100vh - 100px);
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+            padding: 4rem 0;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Sections */
+        .section {
+            padding: 4rem 0;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        /* Courses Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #3498db;
+        }
+
+        .course-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .course-card h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .course-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .course-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-features li {
+            padding: 0.25rem 0;
+            color: #555;
+        }
+
+        .course-features li::before {
+            content: '✓';
+            color: #27ae60;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .course-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3498db;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .enroll-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .enroll-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .about-features {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+            padding: 2rem;
+            border-radius: 15px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        /* Contact Section */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .contact-info {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+            border-radius: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <span class="logo-text">techlabs_az</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showSection('home')" data-en="Home" data-az="Ana səhifə" data-ru="Главная">Home</a></li>
+                <li><a href="#" onclick="showSection('courses')" data-en="Courses" data-az="Kurslar" data-ru="Курсы">Courses</a></li>
+                <li><a href="#" onclick="showSection('about')" data-en="About" data-az="Haqqımızda" data-ru="О нас">About</a></li>
+                <li><a href="#" onclick="showSection('contact')" data-en="Contact" data-az="Əlaqə" data-ru="Контакты">Contact</a></li>
+                <li>
+                    <div class="language-selector">
+                        <button class="lang-btn active" onclick="changeLanguage('en')">EN</button>
+                        <button class="lang-btn" onclick="changeLanguage('az')">AZ</button>
+                        <button class="lang-btn" onclick="changeLanguage('ru')">RU</button>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="container">
+                    <h1 data-en="Advanced Engineering Training" data-az="Qabaqcıl Mühəndislik Təlimi" data-ru="Передовое инженерное обучение">Advanced Engineering Training</h1>
+                    <p data-en="Specialized courses for Petroleum and Chemical Engineering students. Master cutting-edge technologies and laboratory techniques." data-az="Neft və Kimya Mühəndisliyi tələbələri üçün ixtisaslaşmış kurslar. Qabaqcıl texnologiyalar və laboratoriya üsullarını mənimsəyin." data-ru="Специализированные курсы для студентов нефтяной и химической инженерии. Изучите передовые технологии и лабораторные методы.">Specialized courses for Petroleum and Chemical Engineering students. Master cutting-edge technologies and laboratory techniques.</p>
+                    <a href="#" class="cta-button" onclick="showSection('courses')" data-en="Explore Courses" data-az="Kursları Araşdır" data-ru="Изучить курсы">Explore Courses</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="courses" class="section">
+            <div class="container">
+                <h2 data-en="Our Course Catalog" data-az="Kurs Kataloqu" data-ru="Каталог курсов">Our Course Catalog</h2>
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <div class="course-icon">⚗️</div>
+                        <h3 data-en="Catalysis Fundamentals" data-az="Katalizin Əsasları" data-ru="Основы катализа">Catalysis Fundamentals</h3>
+                        <p data-en="Master the principles of heterogeneous and homogeneous catalysis" data-az="Heterojen və homojen katalizin prinsiplərini mənimsəyin" data-ru="Изучите принципы гетерогенного и гомогенного катализа">Master the principles of heterogeneous and homogeneous catalysis</p>
+                        <ul class="course-features">
+                            <li data-en="Reaction mechanisms" data-az="Reaksiya mexanizmləri" data-ru="Механизмы реакций">Reaction mechanisms</li>
+                            <li data-en="Catalyst design" data-az="Katalizator dizaynı" data-ru="Дизайн катализаторов">Catalyst design</li>
+                            <li data-en="Industrial applications" data-az="Sənaye tətbiqləri" data-ru="Промышленные применения">Industrial applications</li>
+                            <li data-en="Lab simulations" data-az="Laboratoriya simulyasiyaları" data-ru="Лабораторные симуляции">Lab simulations</li>
+                        </ul>
+                        <div class="course-price">$299</div>
+                        <button class="enroll-btn" data-en="Enroll Now" data-az="İndi Qeydiyyatdan Keç" data-ru="Записаться сейчас">Enroll Now</button>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-icon">🧪</div>
+                        <h3 data-en="VCU Analysis Techniques" data-az="VCU Analiz Üsulları" data-ru="Методы анализа VCU">VCU Analysis Techniques</h3>
+                        <p data-en="Advanced vacuum crystallization unit operations and analysis" data-az="Qabaqcıl vakuum kristallaşma qurğusu əməliyyatları və analizi" data-ru="Передовые операции и анализ установок вакуумной кристаллизации">Advanced vacuum crystallization unit operations and analysis</p>
+                        <ul class="course-features">
+                            <li data-en="Equipment operation" data-az="Avadanlıq idarə edilməsi" data-ru="Эксплуатация оборудования">Equipment operation</li>
+                            <li data-en="Process optimization" data-az="Proses optimallaşdırılması" data-ru="Оптимизация процесса">Process optimization</li>
+                            <li data-en="Quality control" data-az="Keyfiyyət nəzarəti" data-ru="Контроль качества">Quality control</li>
+                            <li data-en="Troubleshooting" data-az="Nasazlıqların aradan qaldırılması" data-ru="Устранение неисправностей">Troubleshooting</li>
+                        </ul>
+                        <div class="course-price">$399</div>
+                        <button class="enroll-btn" data-en="Enroll Now" data-az="İndi Qeydiyyatdan Keç" data-ru="Записаться сейчас">Enroll Now</button>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-icon">🔬</div>
+                        <h3 data-en="Laboratory Technologies" data-az="Laboratoriya Texnologiyaları" data-ru="Лабораторные технологии">Laboratory Technologies</h3>
+                        <p data-en="Modern analytical instruments and laboratory management" data-az="Müasir analitik alətlər və laboratoriya idarəetməsi" data-ru="Современные аналитические приборы и управление лабораторией">Modern analytical instruments and laboratory management</p>
+                        <ul class="course-features">
+                            <li data-en="Spectroscopy methods" data-az="Spektroskopiya üsulları" data-ru="Методы спектроскопии">Spectroscopy methods</li>
+                            <li data-en="Chromatography" data-az="Xromatoqrafiya" data-ru="Хроматография">Chromatography</li>
+                            <li data-en="Safety protocols" data-az="Təhlükəsizlik protokolları" data-ru="Протоколы безопасности">Safety protocols</li>
+                            <li data-en="Data analysis" data-az="Məlumat analizi" data-ru="Анализ данных">Data analysis</li>
+                        </ul>
+                        <div class="course-price">$349</div>
+                        <button class="enroll-btn" data-en="Enroll Now" data-az="İndi Qeydiyyatdan Keç" data-ru="Записаться сейчас">Enroll Now</button>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-icon">🛢️</div>
+                        <h3 data-en="Petroleum Processing" data-az="Neft Emalı" data-ru="Переработка нефти">Petroleum Processing</h3>
+                        <p data-en="Comprehensive petroleum refining and processing techniques" data-az="Hərtərəfli neft təmizləməsi və emal üsulları" data-ru="Комплексные методы переработки и очистки нефти">Comprehensive petroleum refining and processing techniques</p>
+                        <ul class="course-features">
+                            <li data-en="Distillation processes" data-az="Distilləmə prosesləri" data-ru="Процессы дистилляции">Distillation processes</li>
+                            <li data-en="Cracking technologies" data-az="Krekinq texnologiyaları" data-ru="Технологии крекинга">Cracking technologies</li>
+                            <li data-en="Product optimization" data-az="Məhsul optimallaşdırılması" data-ru="Оптимизация продукции">Product optimization</li>
+                            <li data-en="Environmental impact" data-az="Ətraf mühitə təsir" data-ru="Воздействие на окружающую среду">Environmental impact</li>
+                        </ul>
+                        <div class="course-price">$449</div>
+                        <button class="enroll-btn" data-en="Enroll Now" data-az="İndi Qeydiyyatdan Keç" data-ru="Записаться сейчас">Enroll Now</button>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-icon">⚡</div>
+                        <h3 data-en="Process Control Systems" data-az="Proses İdarəetmə Sistemləri" data-ru="Системы управления процессами">Process Control Systems</h3>
+                        <p data-en="Advanced automation and control systems for chemical processes" data-az="Kimyəvi proseslər üçün qabaqcıl avtomatlaşdırma və idarəetmə sistemləri" data-ru="Передовые системы автоматизации и управления химическими процессами">Advanced automation and control systems for chemical processes</p>
+                        <ul class="course-features">
+                            <li data-en="PID controllers" data-az="PID idarəedicilər" data-ru="ПИД-регуляторы">PID controllers</li>
+                            <li data-en="SCADA systems" data-az="SCADA sistemləri" data-ru="SCADA системы">SCADA systems</li>
+                            <li data-en="Safety interlocks" data-az="Təhlükəsizlik kilidi" data-ru="Блокировки безопасности">Safety interlocks</li>
+                            <li data-en="Real-time monitoring" data-az="Real vaxt monitorinqi" data-ru="Мониторинг в реальном времени">Real-time monitoring</li>
+                        </ul>
+                        <div class="course-price">$379</div>
+                        <button class="enroll-btn" data-en="Enroll Now" data-az="İndi Qeydiyyatdan Keç" data-ru="Записаться сейчас">Enroll Now</button>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-icon">🌿</div>
+                        <h3 data-en="Green Chemistry" data-az="Yaşıl Kimya" data-ru="Зеленая химия">Green Chemistry</h3>
+                        <p data-en="Sustainable chemical processes and environmental protection" data-az="Davamlı kimyəvi proseslər və ətraf mühitin qorunması" data-ru="Устойчивые химические процессы и защита окружающей среды">Sustainable chemical processes and environmental protection</p>
+                        <ul class="course-features">
+                            <li data-en="Waste minimization" data-az="Tullantıların minimumlaşdırılması" data-ru="Минимизация отходов">Waste minimization</li>
+                            <li data-en="Renewable resources" data-az="Bərpa olunan resurslar" data-ru="Возобновляемые ресурсы">Renewable resources</li>
+                            <li data-en="Clean technologies" data-az="Təmiz texnologiyalar" data-ru="Чистые технологии">Clean technologies</li>
+                            <li data-en="Life cycle assessment" data-az="Həyat dövrü qiymətləndirilməsi" data-ru="Оценка жизненного цикла">Life cycle assessment</li>
+                        </ul>
+                        <div class="course-price">$329</div>
+                        <button class="enroll-btn" data-en="Enroll Now" data-az="İndi Qeydiyyatdan Keç" data-ru="Записаться сейчас">Enroll Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <h2 data-en="About TechLabs_AZ" data-az="TechLabs_AZ Haqqında" data-ru="О TechLabs_AZ">About TechLabs_AZ</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p data-en="TechLabs_AZ is Azerbaijan's premier engineering training platform, specializing in advanced courses for petroleum and chemical engineering students. Our mission is to bridge the gap between academic theory and industrial practice." data-az="TechLabs_AZ Azərbaycanın aparıcı mühəndislik təlimi platformasıdır və neft və kimya mühəndisliyi tələbələri üçün qabaqcıl kurslara ixtisaslaşır. Bizim missiyamız akademik nəzəriyyə və sənaye praktikası arasındakı boşluğu doldurmaqdir." data-ru="TechLabs_AZ - ведущая инженерная обучающая платформа Азербайджана, специализирующаяся на продвинутых курсах для студентов нефтяной и химической инженерии. Наша миссия - устранить разрыв между академической теорией и промышленной практикой.">TechLabs_AZ is Azerbaijan's premier engineering training platform, specializing in advanced courses for petroleum and chemical engineering students. Our mission is to bridge the gap between academic theory and industrial practice.</p>
+                        
+                        <p data-en="Founded by industry experts and academic professionals, we provide hands-on training that prepares students for the challenges of modern engineering careers. Our courses combine theoretical knowledge with practical applications, ensuring graduates are job-ready." data-az="Sənaye ekspertləri və akademik peşəkarlar tərəfindən yaradılmış, biz müasir mühəndislik karyeralarının çətinliklərinə hazırlayan praktik təlim təqdim edirik. Bizim kurslarımız nəzəri bilikləri praktiki tətbiqlə birləşdirir və məzunların işə hazır olmasını təmin edir." data-ru="Основанная экспертами индустрии и академическими профессионалами, мы предоставляем практическое обучение, которое готовит студентов к вызовам современной инженерной карьеры. Наши курсы сочетают теоретические знания с практическими приложениями, обеспечивая готовность выпускников к работе.">Founded by industry experts and academic professionals, we provide hands-on training that prepares students for the challenges of modern engineering careers. Our courses combine theoretical knowledge with practical applications, ensuring graduates are job-ready.</p>
+                    </div>
+                    
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">🎓</div>
+                            <div>
+                                <h4 data-en="Expert Instructors" data-az="Ekspert Müəllimlər" data-ru="Экспертные инструкторы">Expert Instructors</h4>
+                                <p data-en="Learn from industry professionals" data-az="Sənaye peşəkarlarından öyrənin" data-ru="Учитесь у профессионалов отрасли">Learn from industry professionals</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">🔬</div>
+                            <div>
+                                <h4 data-en="Hands-on Training" data-az="Praktiki Təlim" data-ru="Практическое обучение">Hands-on Training</h4>
+                                <p data-en="Real laboratory experience" data-az="Həqiqi laboratoriya təcrübəsi" data-ru="Реальный лабораторный опыт">Real laboratory experience</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">📜</div>
+                            <div>
+                                <h4 data-en="Certification" data-az="Sertifikatlaşdırma" data-ru="Сертификация">Certification</h4>
+                                <p data-en="Industry-recognized certificates" data-az="Sənaye tərəfindən tanınan sertifikatlar" data-ru="Признанные отраслью сертификаты">Industry-recognized certificates</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">🌐</div>
+                            <div>
+                                <h4 data-en="Multilingual Support" data-az="Çoxdilli Də
