@@ -10,7 +10,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
@@ -18,48 +18,7 @@
             background: #0a0a0a;
             overflow-x: hidden;
         }
-
-        /* Animated background */
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-        }
-
-        .background::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="4"/></g></svg>') repeat;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
+        
         header {
             position: fixed;
             top: 0;
@@ -164,13 +123,13 @@
             z-index: -1;
         }
 
-        .nav-menu a:hover {
+        .nav-menu a:hover, .nav-menu a.active {
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
         }
 
-        .nav-menu a:hover::before {
+        .nav-menu a:hover::before, .nav-menu a.active::before {
             left: 0;
         }
 
@@ -200,6 +159,24 @@
             transform: scale(1.1);
         }
 
+        .support-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+            display: inline-block;
+        }
+        
+        .support-btn:hover {
+            background: linear-gradient(135deg, #f093fb, #667eea);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
         /* Main Content */
         main {
             margin-top: 100px;
@@ -209,10 +186,15 @@
             min-height: 100vh;
             padding: 4rem 0;
             display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
         }
 
         .section.active {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
             animation: fadeInUp 0.8s ease forwards;
         }
 
@@ -331,6 +313,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            pointer-events: none;
         }
 
         .particle {
@@ -670,6 +653,12 @@
             margin: 0 auto 1rem;
         }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .nav-menu {
@@ -696,21 +685,10 @@
                 align-items: center;
             }
         }
-
-        /* Loading animation */
-        .loading {
-            opacity: 0;
-            animation: fadeIn 1s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
     </style>
 </head>
 <body>
-    <div class="background"></div>
-    
+
     <header>
         <nav class="container">
             <div class="logo" onclick="showSection('home')">
@@ -729,33 +707,35 @@
                         <button class="lang-btn" onclick="changeLanguage('ru')">RU</button>
                     </div>
                 </li>
+                <li>
+                    <a href="mailto:Techlabs_az@proton.me" class="support-btn"
+                        data-en="Support"
+                        data-az="Dəstək"
+                        data-ru="Поддержка">
+                        Support
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <!-- Home Section -->
-        <section id="home" class="section active loading">
-            <div class="hero">
-                <div class="particles" id="particles"></div>
-                <div class="container">
-                    <div class="hero-content">
-                        <h1 data-en="Engineering Excellence Awaits" data-az="Mühəndislik Mükəmməlliyi Gözləyir" data-ru="Инженерное совершенство ждет">Engineering Excellence Awaits</h1>
-                        <p data-en="Transform your petroleum and chemical engineering career with cutting-edge training, expert mentorship, and hands-on laboratory experience that bridges theory with real-world applications." data-az="Qabaqcıl təlim, ekspert mentorluğu və nəzəriyyəni real dünya tətbiqləri ilə birləşdirən praktiki laboratoriya təcrübəsi ilə neft və kimya mühəndisliyi karyeranızı transformasiya edin." data-ru="Преобразите свою карьеру в нефтяной и химической инженерии с помощью передового обучения, экспертного наставничества и практического лабораторного опыта, который объединяет теорию с реальными приложениями.">Transform your petroleum and chemical engineering career with cutting-edge training, expert mentorship, and hands-on laboratory experience that bridges theory with real-world applications.</p>
-                        <div class="cta-buttons">
-                            <button class="cta-button" onclick="showSection('courses')">
-                                <span data-en="Explore Courses" data-az="Kursları Kəşf Et" data-ru="Изучить курсы">Explore Courses</span>
-                            </button>
-                            <button class="cta-button cta-secondary" onclick="showSection('about')">
-                                <span data-en="Learn More" data-az="Daha Çox Öyrən" data-ru="Узнать больше">Learn More</span>
-                            </button>
-                        </div>
-                    </div>
+        <section id="home" class="section active hero">
+            <div class="particles"></div>
+            <div class="hero-content">
+                <h1 data-en="Unlock Your Engineering Potential" data-az="Mühəndislik Potensialınızı Açın" data-ru="Раскройте свой инженерный потенциал">Unlock Your Engineering Potential</h1>
+                <p data-en="TechLabs_AZ provides cutting-edge training for the next generation of engineers in Azerbaijan." data-az="TechLabs_AZ Azərbaycanda yeni nəsil mühəndislər üçün ən müasir təlimlər təqdim edir." data-ru="TechLabs_AZ предлагает передовое обучение для нового поколения инженеров в Азербайджане.">TechLabs_AZ provides cutting-edge training for the next generation of engineers in Azerbaijan.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="cta-button" onclick="showSection('courses')">
+                        <span data-en="Explore Courses" data-az="Kursları Araşdır" data-ru="Изучить курсы">Explore Courses</span>
+                    </a>
+                    <a href="#" class="cta-button cta-secondary" onclick="showSection('contact')">
+                        <span data-en="Get in Touch" data-az="Əlaqə Saxlayın" data-ru="Связаться">Get in Touch</span>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- Courses Section -->
         <section id="courses" class="section">
             <div class="container">
                 <div class="courses-header">
@@ -794,3 +774,212 @@
                             <span data-en="Enroll Now" data-az="İndi Yazıl" data-ru="Записаться сейчас">Enroll Now</span>
                         </button>
                     </div>
+
+                    <div class="course-card" onclick="enrollCourse('Process Dynamics')">
+                        <div class="course-icon">📊</div>
+                        <h3 data-en="Process Dynamics" data-az="Proses Dinamikası" data-ru="Динамика процессов">Process Dynamics</h3>
+                        <p data-en="Explore the principles of process dynamics and control with real-time data analysis and simulation" data-az="Real-time məlumat analizi və simulyasiya ilə proses dinamikası və nəzarət prinsiplərini öyrənin" data-ru="Изучите принципы динамики процессов и управления с помощью анализа данных в реальном времени и моделирования">Explore the principles of process dynamics and control with real-time data analysis and simulation</p>
+                        <ul class="course-features">
+                            <li data-en="Dynamic Modeling" data-az="Dinamik Modelləşdirmə" data-ru="Динамическое моделирование">Dynamic Modeling</li>
+                            <li data-en="Control Strategies" data-az="Nəzarət Strategiyaları" data-ru="Стратегии управления">Control Strategies</li>
+                            <li data-en="Real-time Data Analysis" data-az="Real-time Məlumat Analizi" data-ru="Анализ данных в реальном времени">Real-time Data Analysis</li>
+                            <li data-en="Simulation & Optimization" data-az="Simulyasiya və Optimallaşdırma" data-ru="Моделирование и оптимизация">Simulation & Optimization</li>
+                        </ul>
+                        <div class="course-price">$349</div>
+                        <button class="enroll-btn" onclick="event.stopPropagation(); enrollCourse('Process Dynamics')">
+                            <span data-en="Enroll Now" data-az="İndi Yazıl" data-ru="Записаться сейчас">Enroll Now</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container">
+                <div class="courses-header">
+                    <h2 data-en="About Us" data-az="Haqqımızda" data-ru="О нас">About Us</h2>
+                    <p data-en="Learn more about TechLabs_AZ and our mission to empower engineers." data-az="TechLabs_AZ və mühəndisləri gücləndirmək missiyamız haqqında daha çox məlumat əldə edin." data-ru="Узнайте больше о TechLabs_AZ и нашей миссии по расширению возможностей инженеров." style="color: rgba(255,255,255,0.8); font-size: 1.2rem;">Learn more about TechLabs_AZ and our mission to empower engineers.</p>
+                </div>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p data-en="TechLabs_AZ is a leading engineering training platform based in Azerbaijan, dedicated to providing high-quality, practical, and industry-relevant courses. Our mission is to bridge the gap between academic knowledge and real-world industrial demands, preparing the next generation of skilled engineers." data-az="TechLabs_AZ Azərbaycanda yerləşən, yüksək keyfiyyətli, praktik və sənaye ilə əlaqəli kurslar təqdim etməyə həsr olunmuş aparıcı mühəndislik təlim platformasıdır. Missiyamız akademik biliklərlə real sənaye tələbləri arasındakı boşluğu aradan qaldırmaq və bacarıqlı mühəndislərin yeni nəslini yetişdirməkdir." data-ru="TechLabs_AZ — ведущая платформа инженерного обучения в Азербайджане, призванная предоставлять высококачественные, практические и актуальные для отрасли курсы. Наша миссия — устранить разрыв между академическими знаниями и реальными промышленными требованиями, подготавливая новое поколение квалифицированных инженеров.">TechLabs_AZ is a leading engineering training platform based in Azerbaijan, dedicated to providing high-quality, practical, and industry-relevant courses. Our mission is to bridge the gap between academic knowledge and real-world industrial demands, preparing the next generation of skilled engineers.</p>
+                        <p data-en="We believe in hands-on learning, expert-led instruction, and a supportive community. Our curriculum is designed by industry veterans and academics, ensuring you gain the skills and insights needed to excel in today's competitive engineering landscape." data-az="Biz praktik öyrənməyə, mütəxəssislər tərəfindən idarə olunan təlimlərə və dəstəkləyici cəmiyyətə inanırıq. Tədris proqramımız sənaye veteranları və akademiklər tərəfindən hazırlanır, bu da sizə bugünkü rəqabətli mühəndislik sahəsində uğur qazanmaq üçün lazım olan bilik və bacarıqları əldə etməyinizi təmin edir." data-ru="Мы верим в практическое обучение, инструктаж под руководством экспертов и поддерживающее сообщество. Наша учебная программа разработана ветеранами отрасли и академиками, что гарантирует получение вами навыков и знаний, необходимых для преуспевания в современной конкурентной инженерной среде.">We believe in hands-on learning, expert-led instruction, and a supportive community. Our curriculum is designed by industry veterans and academics, ensuring you gain the skills and insights needed to excel in today's competitive engineering landscape.</p>
+                    </div>
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">🎓</div>
+                            <div>
+                                <h4 data-en="Expert Instructors" data-az="Peşəkar Təlimçilər" data-ru="Экспертные инструкторы">Expert Instructors</h4>
+                                <p data-en="Learn from industry leaders and experienced professionals." data-az="Sənaye liderlərindən və təcrübəli mütəxəssislərdən öyrənin." data-ru="Учитесь у лидеров отрасли и опытных профессионалов.">Learn from industry leaders and experienced professionals.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">💻</div>
+                            <div>
+                                <h4 data-en="Practical Projects" data-az="Praktik Layihələr" data-ru="Практические проекты">Practical Projects</h4>
+                                <p data-en="Apply your knowledge with real-world, hands-on projects." data-az="Biliklərinizi real dünya, praktik layihələrdə tətbiq edin." data-ru="Применяйте свои знания в реальных, практических проектах.">Apply your knowledge with real-world, hands-on projects.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🌐</div>
+                            <div>
+                                <h4 data-en="Flexible Learning" data-az="Çevik Təlim" data-ru="Гибкое обучение">Flexible Learning</h4>
+                                <p data-en="Access courses anytime, anywhere, at your own pace." data-az="Kurslara istənilən vaxt, hər yerdə, öz sürətinizlə daxil olun." data-ru="Доступ к курсам в любое время, в любом месте, в своем темпе.">Access courses anytime, anywhere, at your own pace.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container">
+                <div class="courses-header">
+                    <h2 data-en="Contact Us" data-az="Əlaqə" data-ru="Связаться с нами">Contact Us</h2>
+                    <p data-en="Have questions? Reach out to us directly!" data-az="Suallarınız var? Bizimlə birbaşa əlaqə saxlayın!" data-ru="Есть вопросы? Свяжитесь с нами напрямую!" style="color: rgba(255,255,255,0.8); font-size: 1.2rem;">Have questions? Reach out to us directly!</p>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-form">
+                        <form action="#" method="POST">
+                            <div class="form-group">
+                                <label for="name" data-en="Your Name" data-az="Adınız" data-ru="Ваше имя">Your Name</label>
+                                <input type="text" id="name" name="name" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="email" data-en="Your Email" data-az="E-poçtunuz" data-ru="Ваша почта">Your Email</label>
+                                <input type="email" id="email" name="email" required placeholder="john.doe@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="message" data-en="Your Message" data-az="Mesajınız" data-ru="Ваше сообщение">Your Message</label>
+                                <textarea id="message" name="message" rows="6" required placeholder="Type your message here..."></textarea>
+                            </div>
+                            <button type="submit" class="cta-button">
+                                <span data-en="Send Message" data-az="Mesaj Göndər" data-ru="Отправить сообщение">Send Message</span>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-card">
+                            <div class="contact-icon">📍</div>
+                            <h4 data-en="Our Location" data-az="Ünvanımız" data-ru="Наш адрес">Our Location</h4>
+                            <p data-en="Baku, Azerbaijan" data-az="Bakı, Azərbaycan" data-ru="Баку, Азербайджан">Baku, Azerbaijan</p>
+                        </div>
+                        <div class="contact-card">
+                            <div class="contact-icon">📧</div>
+                            <h4 data-en="Email Us" data-az="Bizə Yazın" data-ru="Напишите нам">Email Us</h4>
+                            <p data-en="Techlabs_az@proton.me" data-az="Techlabs_az@proton.me" data-ru="Techlabs_az@proton.me">Techlabs_az@proton.me</p>
+                        </div>
+                        <div class="contact-card">
+                            <div class="contact-icon">📞</div>
+                            <h4 data-en="Call Us" data-az="Bizə Zəng Edin" data-ru="Позвоните нам">Call Us</h4>
+                            <p data-en="+994 50 123 45 67" data-az="+994 50 123 45 67" data-ru="+994 50 123 45 67">+994 50 123 45 67</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function changeLanguage(lang) {
+            // Update all elements with data-en/data-az/data-ru
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const translation = el.getAttribute('data-' + lang);
+                if (translation) {
+                    el.textContent = translation;
+                }
+            });
+
+            // Update placeholder attributes for form inputs/textareas
+            const placeholderTranslations = {
+                name: {
+                    en: 'John Doe',
+                    az: 'Adınız Soyadınız',
+                    ru: 'Иван Иванов'
+                },
+                email: {
+                    en: 'john.doe@example.com',
+                    az: 'mail@example.com',
+                    ru: 'pochta@example.com'
+                },
+                message: {
+                    en: 'Type your message here...',
+                    az: 'Mesajınızı bura yazın...',
+                    ru: 'Напишите ваше сообщение здесь...'
+                }
+            };
+
+            Object.keys(placeholderTranslations).forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field && placeholderTranslations[fieldId][lang]) {
+                    field.setAttribute('placeholder', placeholderTranslations[fieldId][lang]);
+                }
+            });
+
+            // Update active button style
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.trim().toLowerCase() === lang) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show target section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Update nav links
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Add active class to the clicked nav link
+            const activeNavLink = document.querySelector(`.nav-menu a[onclick*="showSection('${sectionId}')"]`);
+            if (activeNavLink) {
+                activeNavLink.classList.add('active');
+            }
+        }
+
+        function enrollCourse(courseName) {
+            alert(`You are interested in enrolling in: ${courseName}!\n\nPlease contact us at Techlabs_az@proton.me for enrollment details.`);
+        }
+
+        // Initialize particles
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            if (!particlesContainer) return;
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home');
+            createParticles();
+            changeLanguage('en');
+        });
+
+        // Prevent default form submission
+        document.querySelector('.contact-form form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.\n\nFor immediate assistance, please email us at Techlabs_az@proton.me');
+        });
+    </script>
+</body>
+</html>
